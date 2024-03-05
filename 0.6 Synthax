@@ -1,0 +1,35 @@
+sequenceDiagram
+    participant user
+    participant browser
+    participant server
+
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    server-->>browser: HTML document
+
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: the JavaScript file
+    deactivate server
+
+    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser:  [{ "content": "Bisdig", "date": "2023-01-05" }, ... ]
+    deactivate server
+
+    user->>browser: press save button
+
+    browser ->> server : Post note [{ "content": "Yippe", "date": "2023-03-04" }, ... ]
+    server -->> browser: Confirms note [{ "content": "Yippe", "date": "2023-03-04" }, ... ] added
+    browser  -->> user : Shows the added note  
+
+    Note right of browser: The browser executes the callback function that renders the notes
